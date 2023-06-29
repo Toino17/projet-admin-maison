@@ -51,6 +51,10 @@ session_start();
             '<p class=\'attentionnote\'>Bienvenue '. $_SESSION['Prenom'] .' !</p>';
     }
 
+    if (isset($_POST['seconnecter']) && (($_POST['identifiant']!=='Tony') or ($_POST['password']!=='17071996'))) {
+        echo '<p class=\'pop_up_idfalse\'>Identifiants incorrects</p>';
+    }
+
     if (!isset($_GET['page']) && !empty($_SESSION)){
         echo 
             '<p class=\'accueilletext\'>Bienvenue sur votre page d\'accueille!</p>';
@@ -68,11 +72,15 @@ session_start();
         session_destroy();
     }
     
-   
+    if (isset($_GET['page']) && $_GET['page']=='settings' && empty($_SESSION)){
+        echo 'Vous devez être connecté pour accéder à cette page';
+    }
+
     if (isset($_GET['page']) && $_GET['page']=='settings' && !empty($_SESSION)){
+    
         echo 
             '<h2 class=\'titre_settings\'>Modification de vos paramètres:</h2><br> 
-            <form metho=\'POST\' class=\'formsettings\'>
+            <form method=\'POST\' class=\'formsettings\'>
             <label for="Nom">Nom: </label><input type="text" name=\'Nom\' value=\''. $_SESSION['Nom'] .'\'>
             <label for="Prenom">Prénom: </label><input type="text" name=\'Prenom\' value=\''. $_SESSION['Prenom'] .'\'>
             <label for="Age">Age: </label><input type="number" name=\'Age\' value=\''. $_SESSION['Age'] .'\'>
@@ -82,13 +90,18 @@ session_start();
     }
 
     if (isset($_POST['change']) && !empty($_POST['Nom']) && !empty($_POST['Prenom']) && !empty($_POST['Age']) && !empty($_POST['Rôle'])) {
-        $_SESSION['Nom']==$_POST['Nom'];
-        $_SESSION['Prenom']==$_POST['prenom'];
-        $_SESSION['Age']==$_POST['Age'];
-        $_SESSION['Role']==$_POST['Rôle'];
+        echo '<p class=\'pop_up_settings\'>Félicitation vos modifications ont bien été enregistré!</p>';
+        $_SESSION['Nom']=$_POST['Nom'];
+        $_SESSION['Prenom']=$_POST['Prenom'];
+        $_SESSION['Age']=$_POST['Age'];
+        $_SESSION['Role']=$_POST['Rôle'];
 
     }
-   
+    
+    if (isset($_GET['page']) && $_GET['page']=='user' && empty($_SESSION)){
+        echo 'Vous devez être connecté pour accéder à cette page';
+    }
+
     if (isset($_GET['page']) && $_GET['page']=='user' && !empty($_SESSION)){
         echo 
             '<h2 class=\'titre_user\'>Informations utilisateur:</h2><br></br>
